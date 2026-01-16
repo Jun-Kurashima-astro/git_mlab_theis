@@ -1,0 +1,90 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% preferences
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4j,10pt,uplatex]{jsbook}	% class の指定
+%\include{Config/Config.tex}					% 森研のパッケージ・コマンドのテンプレートの読み込み
+\input{Config/Config.tex}
+
+\oddsidemargin -7.4mm						% 奇数ページの左の余白
+\evensidemargin -7.4mm						% 偶数ページの左の余白
+\textwidth 174mm							% 1 行の幅
+\topmargin 0mm 								% 上の余白
+\headheight 0pt								% ヘッダの縦幅
+\headsep 25pt								% ページ数と本文の間
+\textheight 246mm							% 本文の縦幅
+\parindent 1pt								% 改段落時の字下げ幅
+\columnsep 0mm								% 段組み間の幅
+\baselineskip 14pt plus 1pt minus 1pt		% 行間の設定
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cover Page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{
+令和6年度 卒業論文\\
+\vspace{4ex}
+\huge \mbox{Ｘ線分光撮像衛星 XRISM に搭載した} \mbox{軟Ｘ線撮像検出器 SXI による}\mbox{太陽フレアの地球大気反射Ｘ線の観測}}
+
+
+\author{
+宮崎大学 工学部 工学科 応用物理工学プログラム\\
+%宮崎大学 工学研究科 工学専攻 エネルギー系コース\\
+\\
+\Large{倉嶋 順}\\
+}
+
+\date{\today}
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{Abstract/Abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% List of Contents, Figures and Tables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\dominitoc
+%\dominilof
+%\dominilot
+\setcounter{tocdepth}{3}
+\tableofcontents
+%\listoffigures
+%\listoftables
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Main Text
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{Chapter1/LateX/Chapter1}
+\include{Chapter2/LateX/Chapter2}
+\include{Chapter3/LateX/Chapter3}
+\include{Chapter4/LateX/Chapter4}
+\include{Chapter5/LateX/Chapter5}
+\include{Chapter6/LateX/Chapter6}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{Reference/Reference}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\include{Appendix/Appendix}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Acknowledges
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\include{Acknowledgment/Acknowledgment}
+
+\end{document}

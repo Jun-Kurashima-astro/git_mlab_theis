@@ -1,0 +1,107 @@
+\chapter{観測データ}
+
+XRISM /SXI で観測された太陽の地球大気反射Ｘ線は、空間的に分解されていない太陽全面の積分された放射である。そのため、活動領域、静穏領域、フレアなど様々な成分から構成されている。しかし、Xクラスの大規模な太陽フレアでは、フレアの放射自体が観測されるＸ線放射の約90\%から99\%を占めているため、ほぼ純粋なフレアのＸ線が得られる。また、高いＸ線フラックスにより、詳細な分光を行うのに十分な光子を得ることができる。そのため、論文では主に大規模なフレアのみに焦点を当てる。
+
+本研究では、XRISM /SXI が2023年10月19日に観測を開始してから、2024年12月31日までの期間における観測データの調査を行った。2023年10月19日から2024年12月31日の期間において、55回のXクラスフレアが発生した。そのうち、XRISM /SXI の昼地球観測時間とフレアピークが一致するものを選別した。使用した昼地球条件は \texttt{"$ELV < 0 \, \& \, NTE\_ELV > 0$"} である。本研究では、7つのXクラスフレアと2つのMクラスフレアを解析で使用した。表\ref{tb:obsdata}に使用したデータを示す。
+
+\begin{table}[htbp]
+	\begin{center}
+		\caption{解析に使用した観測データ}
+		\label{tb:obsdata}
+		\begin{tabular}{ccccc}
+			\hline \hline
+			観測ID & フレアID & フレアクラス & 開始時刻 &  露光時間(秒)\\ \hline
+			300056010 & Flare-1　& X1.69 & 2024年5月3日 02:13:59 & 1284 \\
+			300056010 & Flare-2　& X1.29 & 2024年5月5日 11:45:30 & 1352 \\
+			300056010 & Flare-3　& M8.29 & 2024年5月7日 16:29:28 & 740 \\
+			300042020 & Flare-4　& X3.48 & 2024年5月15日 08:30:00 & 596 \\			
+			300053010 & Flare-5　& X1.57 & 2024年7月29日 02:23:19 & 1116 \\	
+			300053010 & Flare-6　& M5.45 & 2024年7月31日 18:16:14 & 1136 \\
+			201104010 & Flare-7　& X9.05 & 2024年10月3日 12:14:00 & 156 \\			
+			201120010 & Flare-8　& X1.84 & 2024年10月9日 02:00:58 & 300 \\	
+			201035010 & Flare-9　& X3.33 & 2024年10月24日 04:02:06 & 1028 
+			 \\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\newpage
+図\ref{fig:Lcurve} の上段に、各フレアの SXI ライトカーブを示す。これらは、4つのSXIセンサーで得られたすべてのイベントを足し合わせたものである。下段に、 GOES のＸ線ライトカーブを示す。
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-1_lcurve.png}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-2_lcurve.png}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-3_lcurve.png}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-4_lcurve.png}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-5_lcurve.png}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-6_lcurve.png}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}		
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-7_lcurve.png}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-8_lcurve.png}
+				\hspace{20mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	\raggedright %
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.3cm]{Chapter4/Figures/Flare-9_lcurve.jpg}
+				\hspace{20mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}	
+	\caption{上段は、Flare-1 から Flare-9 の XRISM /SXI の光度曲線。下段に GOES Ｘ線フラックスを示す。}
+	\label{fig:Lcurve}
+\end{figure}
+
+
+
+
+

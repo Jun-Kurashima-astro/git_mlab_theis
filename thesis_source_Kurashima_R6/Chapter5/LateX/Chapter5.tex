@@ -1,0 +1,602 @@
+\chapter{スペクトル解析}
+本章では、まず Flare-1 から Flare-9 を足し合わせて作成したフレアの積分スペクトルから得られた結果を示す。次にフレアのスペクトルから絶対元素組成比の測定方法について説明する。この絶対元素組成比の測定方法を用いて、フレアクラス別に算出した絶対元素組成比を 5.3 に、フレアピーク付近を時間分割して算出した絶対元素組成比を 5.4 に示す。
+
+\section{積分スペクトル}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=100mm,angle=0]{Chapter5/Figures/merge_flare_spec.jpg}
+	\end{center}
+	\caption{Flare-1 から Flare-9 を足し合わせ、プレフレアを差し引いたスペクトル(4つのSXIを合計したもの)。灰色でプレフレアのスペクトルを示す。TI,Cr,Ni は K20\cite{Katsuda} と比較して、SXIで新たに得られた輝線である。}
+	\label{fig:flare_merge_spec}
+\end{figure}
+図\ref{fig:flare_merge_spec} に Flare-1からFlare-9までを足し合わせ、プレフレアを差し引いたスペクトルを示す。基礎となる連続的な放射の上に、Si, S, Ar, Ca, Ti, Cr, Fe, Ni の輝線が得られた。 Ti, Cr, Ni の輝線は \mbox{Katsuda et al.~2020\cite{Katsuda}} と比較して新たに得られた輝線である。以降は Katsuda et al.~2020\cite{Katsuda} を K20 と略する。
+
+
+\section{絶対元素組成比の測定手法}
+
+\subsection{等価幅の測定}
+本研究のスペクトル解析手法は、基本的に K20\cite{Katsuda} に倣ったものである。
+太陽X線放射のスペクトル形状は、地球の大気散乱によって変化する。昼地球のデータを解析する際には、このスペクトルの変形を考慮する必要がある。そのため、観測データからスペクトルの変形に影響されない等価幅を測定し、絶対元素組成比に変換した。スペクトルフィッティングの際に使用した Respoonse Matrix File (RMF)と Ancillary Response File(ARF) はそれぞれ xtdrmf 及び xaarfgen を使用して生成した。RMF と ARF の詳細については、Ishisaki et al.2007 \cite{Ishisaki} に記載されている。
+
+\subsection{等価幅から絶対元素組成比への変換}
+
+本節では、等価幅から絶対元素組成比に変換する解析手法を説明する。等価幅は、元素組成比だけでなく温度や電離状態にも依存する。そのため、モデルで期待される等価幅を算出し、これを測定値と比較することで元素組成比を算出した。以下の2つのモデルを使用した。1つは温度 $T$ と放射量 (EM) の2つの値を持つ2温度モデルである。もう一つは、温度に対する微分放射量 (DEM) がべき乗則に従う多温度モデルを採用した (EM = 定数 $\times T^\alpha$)。具体的には、原子データベースの \texttt{ATOMDB 3.1.0} を用いて、\texttt{XSPEC} の2つの \texttt{vapec} モデルを2温度モデルに、1つの \texttt{cevmkl} モデルを多温度モデルに使用した。
+
+2温度モデルでは、温度 ($kT$) を $0.5~\mathrm{keV}$ と $1.7~\mathrm{keV}$ とした。これは、ピーク温度がこれらの値を持つ二峰性の微分放射量を示した先行研究 (Caspi et al.~2014\cite{Caspi}; Sylwester et al.~2014\cite{Sylwester}) に基づく。また、多温度モデルに関しては、Si, S, Ar, Ca の He-like, H-like イオンからの輝線が $0.2 \sim 2~\mathrm{keV}$ の温度範囲の熱プラズマによって形成される。さらに、Xクラスのフレアでは、超高温 ($kT \geq 3~\mathrm{keV}$) の成分が存在する (e.g., Caspi \& Lin 2010)。本研究では、Si, S, Ar, Ca に加え Fe の絶対元素組成比を算出するために、$kT_\mathrm{max}$ を $3.5~\mathrm{keV}$ としてモデル等価幅を測定した。
+
+2温度モデル ($0.5~\mathrm{keV} + 1.7~\mathrm{keV}$) および多温度モデルの場合、等価幅 (EW) は元素組成比だけでなく、2成分の正規化比 ($N_2/N_1$) や温度分布のべき乗指数 ($\alpha$) にも依存する。そのため、等価幅を絶対的な元素組成比に変換するには、これらのパラメータを特定する必要がある。これらのパラメータは、同じ元素の異なる電荷状態に由来する輝線の強度比に敏感であるため、強度比によって測定できる。K20\cite{Katsuda}に倣い、本研究でも、データ内で最も統計のよい \mbox{Si Ly$\alpha$ / Si He$\alpha$} の強度比を選択した。図\ref{fig:flare_alpha_N2divN1}は、Si Ly$\alpha$ / Si He$\alpha$ 比が $N_2/N_1$ および $\alpha$ にどのように依存するかを示している。具体的には、まず2温度モデルで、\texttt{XSPEC} の \texttt{fakeit} を使用して、モデル $vapec+vapec$ の温度を $1.7~\mathrm{keV}$ と $0.5~\mathrm{keV}$ に、$N_1$ を10に固定し、$N_2$ を $0.1$ から $40$ まで $0.01$ ずつ変化させたときの2温度モデルスペクトルを作成した。次に、多温度モデルでも同様に、\texttt{fakeit} を使用して、モデル \texttt{cevmkl} の$kT_\mathrm{max}$ を $3.5~\mathrm{keV}$ に固定してシミュレートを行い、$\alpha$ を $-4$ から $3$ まで $0.01$ ずつ変化させたときの多温度モデルスペクトルを作成した。作成した2温度モデルと多温度モデルスペクトルの Si He$\alpha$ と Si Ly$\alpha$ を、ガウシアンとべき乗モデルでフィットを行い、$N_2/N_1$, $\alpha$ の値における Si Ly$\alpha$ / Si He$\alpha$ の強度比をプロットしたものが図\ref{fig:flare_alpha_N2divN1}である。この図~\ref{fig:flare_alpha_N2divN1}を用いて、各スペクトルごとに、測定した Si Ly$\alpha$ / Si He$\alpha$ から $N_2/N_1$, $\alpha$ の値を決定した。
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=8cm]{Chapter5/Figures/vapec_0a5and1a7keV_sxi_N1divN2_vs_SiLy_div_SiHe.jpg}
+				\hspace{10mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=8cm]{Chapter5/Figures/cevmkl_2keV_sxi_alpha_vs_SiLy_div_SiHe.jpg}
+				\hspace{10mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	\caption{左図：2温度モデルの Si Ly$\alpha$ / Si He$\alpha$ の強度比。右図：多温度モデルで、$kT_\mathrm{max}$$3.5~\mathrm{keV}$ でシミュレートした Si Ly$\alpha$ / Si He$\alpha$ の強度比。}
+\label{fig:flare_alpha_N2divN1}
+\end{figure}
+
+Si Ly$\alpha$ / He$\alpha$ は地球大気反射 (スペクトル硬化の影響)により増加する。この効果を考慮するために、\mbox{K20\cite{Katsuda}} ではモンテカルロシミュレーションを行っている。このシミュレーションでは、入力が太陽X線スペクトル ($kT = 1.5~\mathrm{keV}$ の典型的な太陽フレア温度をもつ\texttt{apec}モデル) であり、出力は地球大気反射スペクトルである。K20\cite{Katsuda} によるシミュレーション結果より、固有の Si Ly$\alpha$ / Si He$\alpha$ は観測値の $0.8$ 倍であると示された。本研究では、K20\cite{Katsuda} と同様に、観測値の $0.8$ 倍で補正を行った。
+モデル等価幅は、各スペクトル (Flare 1-9) について、最適な $N_2/N_1$ (2温度モデル) または $\alpha$ (多温度モデル) の条件下で、絶対組成比の関数として算出した。原理的には、モデル等価幅は放射モデル (\texttt{vapec} および \texttt{cevmkl}) から直接導出できる。しかし、本研究では、等価幅の測定と同じように、ガウシアンとべき関数モデルでシミュレートされたSXIスペクトルをフィッティングすることでモデル等価幅を測定した。このプロセスは、特に個々の輝線を分解できない中程度のスペクトル分解能を持つX線CCDにとって重要である。図~\ref{fig:EW_abund}は、例として、Flare-1, Flare-4, Flare-7 の多温度モデルに基づく等価幅を、絶対組成比の関数として示したものである。具体的には、１つ目のプロセスとして、Si Ly$\alpha$ / Si He$\alpha$ の値から図~\ref{fig:flare_alpha_N2divN1}を用いて、各フレアの$\alpha$を測定した。次に測定した$\alpha$でモデル \texttt{cevmkl} の温度を固定し、Si He$\alpha$, Si Ly$\alpha$, S He$\alpha$, S Ly$\alpha$, Ar He$\alpha$, Ca He$\alpha$, Fe He$\alpha$ の絶対元素組成比を $0.01$ から  まで $0.01$ ずつ変化させたときの多温度モデルスペクトルを作成した。作成した多温度モデルスペクトルを $gaussian$ と $powerlaw$ でフィッティングし、各輝線の絶対元素組成比に対する等価幅を算出した値をプロットしたグラフが図~\ref{fig:EW_abund}である。
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=7cm]{Chapter5/Figures/Si_He_abund_EW.jpg}
+				\hspace{40mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=7cm]{Chapter5/Figures/Si_Ly_abund_EW.jpg}
+				\hspace{40mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	%CCD2
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=7cm]{Chapter5/Figures/S_He_abund_EW.jpg}
+				\hspace{40mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=7cm]{Chapter5/Figures/S_Ly_abund_EW.jpg}
+				\hspace{40mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	%CCD3
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=7cm]{Chapter5/Figures/Ar_He_abund_EW.jpg}
+				\hspace{40mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=7cm]{Chapter5/Figures/Ca_He_abund_EW.jpg}
+				\hspace{40mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}		
+	%CCD4
+	\raggedright %
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=7cm]{Chapter5/Figures/Fe_He_abund_EW.jpg}
+				\hspace{40mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	\caption{Si He$\alpha$, Si Ly$\alpha$, S He$\alpha$, S Ly$\alpha$, Ar He$\alpha$, Ca He$\alpha$, Fe He$\alpha$ の絶対元素組成比の関数としての等価幅。これらは多温度モデルに基づいており、温度勾配パラメータ($\alpha$)は、それぞれ Flare-1 ,Flare-4 ,Flare-7 の \mbox{Si Ly$\alpha$ / Si He$\alpha$} から求めた $\alpha$ の値に固定している、データポイントの散布は、シミュレートスペクトルのスペクトル適合から生じる統計的変動である。 }
+	\label{fig:EW_abund}
+\end{figure}
+
+\newpage
+\section{フレアクラス別の絶対元素組成比}
+\label{sec:flare_to_falre_abund}
+本節では、フレアクラス別に算出した絶対元素組成比の結果を示す。
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-1_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-2_spec.jpg}
+				\hspace{5mm} 
+			\end{center}
+		\end{minipage}	
+	\end{tabular}	
+	\centering
+	\begin{tabular}{c}			
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-3_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-4_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}																		
+	\end{tabular}
+	\centering
+	\begin{tabular}{c}							
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-5_spec.jpg}
+				\hspace{5mm} 
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-6_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}		
+	\centering
+	\begin{tabular}{c}							
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-8_spec.jpg}
+				\hspace{5mm} 
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.1cm]{Chapter5/Figures/Flare-9_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}		
+	\end{tabular}
+	\caption{Flare-1 から Flare-9 までの SXI スペクトル(Flare-7 はフレアピークと観測期間がずれていたため、ここでは除外している)。上段に、赤色で $gaussian$ と $powerlaw$ で構成された最適フィットモデルとデータを示す。灰色のデータはバックグラウンドとして使用したプレフレアスペクトルである。下段にフィットモデルとの残差を示す。}
+	\label{fig:Flare_spec}
+\end{figure}
+図~\ref{fig:Flare_spec} にフレアピークを観測した8つのフレアスペクトルを示す。なお、GOESＸ線フラックスが極大となった時間をフレアピークとしている。ここでは、フレアピークと観測期間がずれていた Flare-7 を除外し、2回のMクラス、4回のX1クラス、2回のX3クラスのフレアを使用した。黒と灰色で示したデータは、それぞれフレアスペクトルとバックグラウンドとして使用したプレフレアスペクトルである。赤色で12のガウス分布とべき乗モデルで構成された最適フィットモデルを示す。
+
+
+
+\begin{table}[htbp]
+	\begin{center}
+		\caption{ガウシアンと連続スペクトルモデルから算出した等価幅(単位は eV )}
+		\label{tb:flare_EW}
+		\begin{tabular}{ccccccccc}
+			\hline \hline
+			フレアID & フレアクラス & Si He$\alpha$ &  Si Ly$\alpha$ & S He$\alpha$ & S Ly$\alpha$ & Ar He$\alpha$ & Ca He$\alpha$ & Fe He$\alpha$\\ \hline
+			Flare-1　& X1.69 & $145^{+6}_{-8}$ & $76^{+6}_{-5}$ & $74^{+8}_{-8}$ & $28^{+7}_{-8}$ & $44^{+15}_{-13}$ & $108^{+13}_{-15}$ & $952^{+40}_{-63}$ \\
+			Flare-2　& X1.29 & $108^{+5}_{-6}$ & $53^{+5}_{-4}$ & $92^{+7}_{-7}$ & $37^{+7}_{-5}$ & $80^{+14}_{-10}$ & $89^{+10}_{-12}$ & $840^{+52}_{-30}$ \\
+			Flare-3　& M8.29 & $168^{+8}_{-8}$ & $73^{+8}_{-6}$ & $114^{+9}_{-15}$ & $33^{+10}_{-10}$ & $87^{+19}_{-20}$ & $128^{+19}_{-22}$ & $995^{+86}_{-82}$ \\
+			Flare-4　& X3.48 & $77^{+10}_{-7}$ & $103^{+12}_{-10}$ & $42^{+10}_{-12}$ & $24^{+8}_{-9}$ & $26^{+11}_{-12}$ & $159^{+20}_{-15}$ & $1484^{+55}_{-55}$ \\			
+			Flare-5　& X1.57 & $178^{+7}_{-8}$ & $88^{+5}_{-6}$ & $118^{+7}_{-7}$ & $36^{+6}_{-7}$ & $63^{+12}_{-11}$ & $115^{+12}_{-12}$ & $1181^{+64}_{-59}$  \\	
+			Flare-6　& M5.45 & $111^{+9}_{-8}$ & $44^{+6}_{-6}$ & $94^{+10}_{-9}$ & $37^{+8}_{-8}$ & $99^{+23}_{-19}$ & $157^{+13}_{-26}$ & $799^{+94}_{-82}$ \\		
+			Flare-7　& X1.84 & $226^{+8}_{-7}$ & $87^{+5}_{-5}$ & $158^{+8}_{-9}$ & $38^{+7}_{-8}$ & $49^{+10}_{-14}$ & $113^{+19}_{-13}$ & $847^{+68}_{-63}$ \\	
+			Flare-9　& X3.33 & $180^{+6}_{-6}$ & $75^{+4}_{-5}$ & $147^{+7}_{-7}$ & $66^{+8}_{-8}$ & $69^{+16}_{-10}$ & $166^{+12}_{-14}$ & $827^{+72}_{-66}$
+			\\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+表~\ref{tb:flare_EW} に Flare-1 から Flare-9 を $gaussian$ と $powerlaw$ でフィッティングし、測定した等価幅を示す。
+
+
+\begin{table}[htbp]
+	\begin{center}
+		\caption{Si Ly$\alpha$ / Si He$\alpha$ の強度比と図~\ref{fig:flare_alpha_N2divN1}のプロットを用いて求めた $N_2/N_1$ (2温度モデル)、$\alpha$ (多温度モデル)}
+		\label{tb:flare_SiLydivSiHe}
+		\begin{tabular}{cccccc}
+			\hline \hline
+			フレアID & フレアクラス & Si Ly$\alpha$/Si He$\alpha$ & Si Ly$\alpha$/Si He$\alpha$ (アルベド補正後) & $\alpha$ & $N_2/N_1$ \\ \hline
+			Flare-1 & X1.69 & $0.43\pm0.04$ & $0.35\pm0.03$ & $-0.7^{+0.13}_{-0.13}$ & $0.46^{+0.04}_{-0.05}$ \\
+			Flare-2 & X1.29 & $0.41\pm0.04$ & $0.32\pm0.03$ & $-0.79^{+0.12}_{-0.13}$ & $0.43^{+0.04}_{-0.05}$\\
+			Flare-3 & M8.29 & $0.35\pm0.04$ & $0.28\pm0.03$ & $-0.99^{+0.11}_{-0.16}$ & $0.36^{+0.04}_{-0.04}$\\
+			Flare-4 & X3.48 & $1.22\pm0.18$ & $0.97\pm0.14$ & $0.8^{+0.20}_{-0.24}$ & $1.87^{+0.54}_{-0.43}$\\
+			Flare-5 & X1.57 & $0.40\pm0.03$ & $0.32\pm0.02$ & $-0.79^{+0.09}_{-0.11}$ & $0.43^{+0.03}_{-0.04}$\\
+			Flare-6 & M5.45 & $0.32\pm0.05$ & $0.25\pm0.04$ & $-1.13^{+0.19}_{-0.21}$ & $0.32^{+0.06}_{-0.05}$\\
+			Flare-7 & X1.84 & $0.30\pm0.02$ & $0.24\pm0.02$ & $-1.19^{+0.09}_{-0.08}$ & $0.31^{+0.02}_{-0.02}$\\
+			Flare-9 & X3.33 & $0.33\pm0.02$ & $0.26\pm0.02$ & $-1.07^{+0.08}_{-0.09}$ & $0.34^{+0.02}_{-0.02}$
+			\\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+表~\ref{tb:flare_SiLydivSiHe} に Si Ly$\alpha$ / Si He$\alpha$ の強度比と図~\ref{fig:flare_alpha_N2divN1}のプロットを用いて求めた $N_2/N_1$ (2温度モデル)、$\alpha$ (多温度モデル)を示す。特に Flare-4 の X3.48 のフレアでは、Si Ly$\alpha$ / Si He$\alpha$ の強度比が他のフレアと比較して大きく、高温成分が顕著にスペクトルに寄与していると考えられる。
+
+
+\newpage
+
+\begin{table}[htbp]
+	\begin{center}
+		\caption{フレア別に測定した絶対元素組成比}
+		\label{tb:flare_abund}
+		\begin{tabular}{cccccccccc}
+			\hline \hline
+			フレアID(放出モデル) & フレアクラス & Si He$\alpha$ & Si Ly$\alpha$ & S He$\alpha$ & Ar He$\alpha$ & Ca He$\alpha$ & Fe He$\alpha$ \\ \hline
+			Flare-1(多温度) & X1.69 & $1.02^{+0.04}_{-0.06}$ & $1.08^{+0.1}_{-0.08}$ & $0.68^{+0.07}_{-0.07}$ & $0.82^{+0.35}_{-0.33}$ & $2.64^{+0.37}_{-0.41}$ & $0.91^{+0.03}_{-0.09}$\\
+			Flare-1(2温度) & X1.69 & $0.88^{+0.03}_{-0.05}$ & $0.91^{+0.1}_{-0.05}$ & $0.53^{+0.06}_{-0.08}$ & $0.62^{+0.28}_{-0.27}$ & $2.08^{+0.31}_{-0.34}$ & $1.23^{+0.11}_{-0.09}$ \\
+			Flare-2(多温度) & X1.29 & $0.73^{+0.04}_{-0.04}$ & $0.79^{+0.07}_{-0.06}$ & $0.81^{+0.07}_{-0.08}$ & $1.72^{+0.28}_{-0.35}$ & $2.14^{+0.23}_{-0.34}$ & $0.79^{+0.05}_{-0.07}$\\
+			Flare-2(2温度) & X1.29 & $0.65^{+0.03}_{-0.04}$ & $0.69^{+0.04}_{-0.06}$ & $0.65^{+0.04}_{-0.06}$ & $1.33^{+0.23}_{-0.21}$ & $1.68^{+0.15}_{-0.25}$ & $0.99^{+0.09}_{-0.13}$ \\
+			Flare-3(多温度) & M8.29 & $1.04^{+0.05}_{-0.05}$ & $1.1^{+0.13}_{-0.07}$ & $0.95^{+0.07}_{-0.12}$ & $1.75^{+0.57}_{-0.37}$ & $3.08^{+0.50}_{-0.54}$ & $0.96^{+0.19}_{-0.09}$\\
+			Flare-3(2温度) & M8.29 & $0.92^{+0.04}_{-0.05}$ & $0.98^{+0.09}_{-0.07}$ & $0.8^{+0.03}_{-0.13}$ & $1.47^{+0.24}_{-0.49}$ & $2.49^{+0.36}_{-0.42}$ & $1.45^{+0.32}_{-0.28}$\\
+			Flare-4(多温度) & X3.48 & $1.38^{+0.19}_{-0.09}$ & $1.49^{+0.17}_{-0.14}$ & $0.73^{+0.15}_{-0.20}$ & $0.49^{+0.40}_{-0.40}$ & $4.89^{+0.10}_{-0.44}$ & $2.26^{+0.53}_{-0.23}$\\
+			Flare-4(2温度) & X3.48 & $1.01^{+0.14}_{-0.08}$ & $1.02^{+0.13}_{-0.09}$ & $0.45^{+0.07}_{-0.11}$ & $0.26^{+0.07}_{-0.23}$ & $3.18^{+0.38}_{-0.36}$ & $2.75^{+0.96}_{-0.18}$\\
+			Flare-5(多温度) & X1.57 & $1.21^{+0.04}_{-0.06}$ & $1.29^{+0.05}_{-0.09}$ & $1.03^{+0.08}_{-0.06}$ & $1.23^{+0.31}_{-0.24}$ & $2.79^{+0.33}_{-0.34}$ & $1.37^{+0.10}_{-0.15}$\\
+			Flare-5(2温度) & X1.57 & $1.05^{+0.04}_{-0.05}$ & $1.12^{+0.03}_{-0.08}$ & $0.83^{+0.04}_{-0.07}$ & $0.98^{+0.18}_{-0.27}$ & $2.23^{+0.15}_{-0.23}$ & $1.97^{+0.30}_{-0.08}$\\
+			Flare-6(多温度) & M5.45 & $0.65^{+0.05}_{-0.04}$ & $0.71^{+0.08}_{-0.07}$ & $0.75^{+0.08}_{-0.13}$ & $2.05^{+0.63}_{-0.47}$ & $3.74^{+0.40}_{-0.69}$ & $0.74^{+0.15}_{-0.10}$\\
+			Flare-6(2温度) & M5.45 & $0.59^{+0.04}_{-0.04}$ & $0.65^{+0.07}_{-0.08}$ & $0.64^{+0.05}_{-0.08}$ & $1.66^{+0.46}_{-0.31}$ & $3.11^{+0.24}_{-0.56}$ & $0.95^{+0.15}_{-0.23}$\\
+			Flare-8(多温度) & X1.84 & $1.3^{+0.05}_{-0.04}$ & $1.4^{+0.08}_{-0.09}$ & $1.24^{+0.06}_{-0.08}$ & $0.88^{+0.18}_{-0.30}$ & $2.61^{+0.49}_{-0.31}$ & $0.83^{+0.09}_{-0.10}$\\
+			Flare-8(2温度) & X1.84 & $1.17^{+0.05}_{-0.03}$ & $1.27^{+0.06}_{-0.10}$ & $1.06^{+0.05}_{-0.07}$ & $0.69^{+0.22}_{-0.31}$ & $2.19^{+0.44}_{-0.26}$ & $1.07^{+0.34}_{-0.09}$\\
+			Flare-9(多温度) & X3.33 & $1.07^{+0.04}_{-0.04}$ & $1.16^{+0.05}_{-0.06}$ & $1.18^{+0.07}_{-0.05}$ & $1.35^{+0.4}_{-0.23}$ & $4.0^{+0.38}_{-0.37}$ & $0.76^{+0.12}_{-0.10}$\\
+			Flare-9(2温度) & X3.33 & $0.96^{+0.03}_{-0.04}$ & $1.04^{+0.05}_{-0.07}$ & $1.01^{+0.03}_{-0.07}$ & $1.04^{+0.35}_{-0.19}$ & $3.35^{+0.19}_{-0.27}$ & $1.03^{+0.17}_{-0.20}$
+			\\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+表~\ref{tb:flare_abund} に各フレアの絶対元素組成比を示す。表~\ref{tb:flare_abund}で算出した値は、表~\ref{tb:flare_SiLydivSiHe} で求めた $N_2/N_1$ (2温度モデル)、$\alpha$ (多温度モデル) の値を用いて、図~\ref{fig:EW_abund} と同様にフレアの絶対元素組成比に対する等価幅のプロットを作成し、等価幅から絶対元素組成比に変換した値である。元素組成比の誤差は、等価幅の誤差の範囲内で変動させることによって見積もった。元素組成比は、Lodders(2003)\cite{Lodders}による光球組成比を基準としており、それぞれ Si/H = $3.47 \times 10^{-5}$、S/H = $1.55 \times 10^{-5}$、Ar/H = $3.55 \times 10^{-6}$、Ca/H = $2.19 \times 10^{-6}$、Fe/H = $2.91 \times 10^{-5}$、である。
+
+表~\ref{tb:flare_abund}より、Si He$\alpha$ と Si Ly$\alpha$ に基づく Si の元素組成比が概ね一致していることを確認した。これは、等価幅から元素組成比へ変換するプロセスの信頼性を示している。また、多温度モデルと2温度モデルから求めた元素組成比も概ね一致しており、仮定した放射モデルの安定性を裏付けている。
+
+\newpage
+
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=120mm,angle=0]{Chapter5/Figures/flare_FIP_Abund_err.jpg}
+	\end{center}
+	\caption{FIP に対する絶対元素組成比。黒十字で示す値は、 K20\cite{Katsuda} で算出された絶対元素組成比である。これらの組成比は、多温度モデルから導出した値である。Si 組成比は Si He$\alpha$ の値に、S の組成比は S He$\alpha$ に基づいている。}
+	\label{fig:flare_fip_abund}
+\end{figure}
+図~\ref{fig:flare_fip_abund}は、多温度モデルから測定した各フレアの絶対元素組成比を、第一電離ポテンシャル (FIP) を横軸にプロットしたグラフである。黒十字は、 K20\cite{Katsuda} で算出された Xクラスフレアの平均絶対元素組成比の値である。
+
+本研究の解析結果では、Ca, Si, S, Ar の絶対元素組成比がK20\cite{Katsuda}で算出された絶対元素組成比よりも高い値となった。絶対元素組成比が高く見積もられた原因として、元素組成比の測定に使用したフレアクラスの違いが大きく影響していると考えられる。K20\cite{Katsuda} で使われた４つのフレアは、X17.0, X5.4, X6.2, X9.0 であり、本研究で使用した X1 クラスや、X3 クラスのフレアと比べて、より高いクラスのフレアが対象となっている。また、K20\cite{Katsuda}と比較して、多温度モデルのべき乗温度指数 $\alpha$ の値にも違いが顕著に現れた。K20\cite{Katsuda}で算出された４つのフレアの $\alpha$ の値は、$0.44$, $0.27$, $0.80$, $1.62$ である。一方、本研究で算出したフレアの $\alpha$ の値は、Flare-4 を除いて、$-1.19 から -0.7$ の値であった。$\alpha$ の差異は、元素組成比の算出に使用したフレアクラスの違いと 多温度モデルの $kT_\mathrm{max}$ の違いが影響していると考えられる。K20\cite{Katsuda}では、多温度モデルの $kT_\mathrm{max}$ を 2keV で絶対元素組成比の算出を行っているが、本研究では、Fe の絶対元素組成比を求めるために $kT_\mathrm{max}$ を 3.5keV で算出した。
+
+本研究で得られた Ca, Si, S, Ar の組成パターンは、K20\cite{Katsuda} 同様に Si と S の間に``折り返し''を持つ i-FIP を示している(Osten et al. 2003\cite{Osten}, Sanz-Forcada et al. 2003\cite{Sanz-Forcada})。実際に、太陽フレアにおけるこのような i-FIP効果は、高FIP元素が豊富なコロナと、低FIP元素が豊富なコロナでは、フレア中にそれぞれ逆の傾向を示す。つまり低FIP元素が相対的に増加するか、高FIP元素が相対的に増加する(Nordon \& Behar 2008\cite{Nordon})。ただし、Nordon \& Behar 2008\cite{Nordon}の提案は主に Chandora や XMM-Newtomn による恒星観測に基づいているが、その中で太陽も低FIP元素が豊富なコロナを持ち、フレア時には高FIP元素が相対的に強くなる例である。
+
+本研究で新たに算出した Fe の絶対元素組成比は、Flare-4(X3.48) 以外のフレアで 0.76-1.37 という値が得られた。これは、FIP が近い Si と同様の結果である。太陽フレア中に Fe の組成比が増加することが、Warren(2014)\cite{Warren}によって、報告されている。Warren(2014)\cite{Warren}は、Solar Dynamics Observatory/EUV
+Variability Experiment を用いて、M9.3からX6.9クラスの21個のフレアの絶対組成比を測定し、Fe の増加を確認した。我々は、XRISM /SXI によるフレア観測でも同様に、フレアピークで Fe の絶対元素組成比が増加することを確認した。一方で、((e.g., Narendranath et al. 2014\cite{Narendranath}, Dennis et al. 2015\cite{Dennis},
+Sylwester et al. 2015\cite{Sylwester}) などの研究では、多くの太陽フレアでこのような低FIP元素の増加は観測されなかった。この違いの理由は明らかではないが、本研究およびWarren(2014)\cite{Warren}の対象としたフレアは、他の研究と比較して規模の大きいフレアを対象としていることが要因と考えられる。
+
+
+\newpage
+\section{フレアピーク付近における絶対元素組成比の時間変動}
+\label{sec:flare_peak_abund}
+フレアピーク付近の観測データを20秒から2分程度の間隔で時間分割し、元素組成比を測定した。時間分割に使用した観測は、特に明るいフレアである、X1.69 の Flare -1, X3.48 の Flare-4, X9.05 の Flare-7 を使用した。
+		
+		
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.48\textwidth}  % 左側（図）
+		\centering
+		\includegraphics[width=7cm]{Chapter5/Figures/flare-1_lcurve.jpg}
+		\caption{Flare-1 を時間分割して色分けした光度曲線}
+		\label{fig:flare-1_slice_lcurve}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.48\textwidth}  % 右側（表）
+		\centering
+		\caption{Flare-1を時間分割した観測データ} % ← ここを変更
+		\label{tab:Flare-1_slice_data}
+		\begin{tabular}{ccc}
+			\hline \hline
+			フレアID(色分け) & 開始時刻 & 露光時間(秒) \\\hline
+			Flare-1a(黒) & 5月3日 02:18:00 & 180 \\
+			Flare-1b(青) & 5月3日 02:21:00 & 180 \\
+			Flare-1c(赤) & 5月3日 02:24:00 & 180 \\
+			Flare-1d(紫) & 5月3日 02:27:00 & 180 \\		
+		\end{tabular}
+	\end{minipage}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-1a_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-1b_spec.jpg}
+				\hspace{5mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}	
+	\centering
+	\begin{tabular}{c}			
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-1c_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-1d_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}			
+	\end{tabular}
+	\caption{Flare-1 を4つに時間分割したスペクトル}
+	\label{fig:Flare-1_slice_spec}
+\end{figure}
+図~\ref{fig:flare-1_slice_lcurve}に Flare-1 を4つに時間分割して色分けした光度曲線を示す。図~\ref{fig:Flare-1_slice_spec}は、時間分割した4つのスペクトルである。フレアピークで、Ca や Si の強度が強くなっている様子がスペクトルから確認できる。
+
+\newpage
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.48\textwidth}  % 左側（図）
+		\centering
+		\includegraphics[width=7cm]{Chapter5/Figures/flare-4_lcurve.jpg}
+		\caption{Flare-4 を時間分割して色分けした光度曲線}
+		\label{fig:flare-4_slice_lcurve}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.48\textwidth}  % 右側（表）
+		\centering
+		\caption{Flare-4 を時間分割した観測データ}
+		\begin{tabular}{ccc}
+			\hline \hline
+			フレアID(色分け) & 開始時刻 & 露光時間(秒) \\\hline
+			Flare-4a(黒) & 5月15日 08:30:00 & 120 \\
+			Flare-4b(青) & 5月15日 08:32:00 & 120 \\
+			Flare-4c(赤) & 5月15日 08:34:00 & 120 \\
+			Flare-4d(紫) & 5月15日 02:36:00 & 120 \\	
+		\end{tabular}
+		\label{tab:element_abundance}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-4a_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-4b_spec.jpg}
+				\hspace{5mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}	
+	\centering
+	\begin{tabular}{c}			
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-4c_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-4d_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}								
+	\end{tabular}
+	\caption{Flare-4 を4つに時間分割したスペクトル}
+	\label{fig:Flare-4_slice_spec}
+\end{figure}
+図~\ref{fig:flare-4_slice_lcurve}に Flare-4 を4つに時間分割して色分けした光度曲線を示す。図~\ref{fig:Flare-4_slice_spec}は、時間分割した4つのスペクトルである。Flare-4 は、他のフレアと比較して、特に Si Ly$\alpha$ / Si He$\alpha$ の値が高く、高温成分が顕著にスペクトルに影響していると考えられる。図~\ref{fig:Flare-4_slice_spec}のスペクトルからも、フレアピークに近づくにつれ、Si Ly$\alpha$ の強度が大きくなっていく様子が確認できる。
+
+\newpage
+
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.48\textwidth}  % 左側（図）
+		\centering
+		\includegraphics[width=7cm]{Chapter5/Figures/flare-8_lcurve.jpg}
+		\caption{Flare-8 を時間分割して色分けした光度曲線}
+		\label{fig:flare-8_slice_lcurve}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.48\textwidth}  % 右側（表）
+		\centering
+		\caption{Flare-8 を時間分割した観測データ}
+		\begin{tabular}{ccc}
+			\hline \hline
+			フレアID(色分け) & 開始時刻 & 露光時間(秒) \\\hline
+			Flare-8a(黒) & 10月3日 12:15:00 & 30 \\
+			Flare-8b(青) & 10月3日 12:15:30 & 30 \\
+			Flare-8c(赤) & 10月3日 12:16:00 & 20 \\
+			Flare-8d(紫) & 10月3日 12:16:20 & 20 
+		\end{tabular}
+		\label{tab:element_abundance}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-8a_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-8b_spec.jpg}
+				\hspace{5mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}	
+	\centering
+	\begin{tabular}{c}			
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-8c_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/Flare-8d_spec.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+	\end{tabular}
+	\caption{Flare-8 を時間分割したスペクトル}
+	\label{fig:Flare-8_slice_spec}
+\end{figure}	
+図~\ref{fig:flare-8_slice_lcurve}に Flare-8 を4つに時間分割して色分けした光度曲線を示す。図~\ref{fig:Flare-8_slice_spec}は、時間分割した4つのスペクトルである。Flare-8 は、2024年に XRISM /SXI で観測した最大のフレアである。特に、フレアの立ち上がりに伴って、Ca の強度が高くなっている様子がスペクトルから確認できる。
+
+
+\newpage
+
+\begin{table}[htbp]
+	\begin{center}
+		\caption{ガウシアンと連続スペクトルモデルから算出した等価幅(単位は eV )}
+		\label{tb:flare_slice_EW}
+		\begin{tabular}{ccccccccc}
+			\hline \hline
+			フレアID  & Si He$\alpha$ &  Si Ly$\alpha$ & S He$\alpha$ & S Ly$\alpha$ & Ar He$\alpha$ & Ca He$\alpha$ & Fe He$\alpha$ \\ \hline
+			Flare-1a　& $145^{+22}_{-21}$ & $68^{+19}_{-14}$ & $79^{+21}_{-22}$ & $54^{+25}_{-20}$ & $111^{+58}_{-36}$ & $59^{+30}_{-25}$ & $1210^{+164}_{-85}$  \\
+			Flare-1b　& $135^{+8}_{-14}$ & $84^{+12}_{-10}$ & $67^{+12}_{-11}$ & $39^{+11}_{-11}$ & $24^{+19}_{-11}$ & $117^{+25}_{-21}$ & $924^{+62}_{-71}$ \\
+			Flare-1c　& $152^{+14}_{-11}$ & $80^{+13}_{-13}$ & $96^{+18}_{-14}$ & $15^{+16}_{-15}$ & $25^{+21}_{-25}$ & $152^{+36}_{-28}$ & $814^{+101}_{-99}$\\
+			Flare-1d　& $148^{+20}_{-23}$ & $60^{+21}_{-14}$ & $102^{+29}_{-25}$ & $22^{+30}_{-22}$ & $94^{+64}_{-42}$ & $99^{+59}_{-48}$ & $855^{+275}_{-211}$\\		
+			Flare-4a　& $141^{+37}_{-33}$ & $49^{+29}_{-26}$ & $52^{+41}_{-36}$ & $97^{+31}_{-56}$ & $0^{+43}_{-0}$ & $122^{+41}_{-44}$ & $1197^{+148}_{-153}$\\	
+			Flare-4b　& $31^{+18}_{-12}$ & $63^{+20}_{-15}$ & $14^{+15}_{-14}$ & $1^{+18}_{-1}$ & $3^{+22}_{-3}$ & $135^{+27}_{-27}$ & $1664^{+67}_{-150}$\\		
+			Flare-4c　& $89^{+19}_{-16}$ & $157^{+26}_{-26}$ & $72^{+29}_{-17}$ & $36^{+25}_{-20}$ & $67^{+37}_{-34}$ & $235^{+23}_{-33}$ & $1615^{+146}_{-95}$\\	
+			Flare-4d　& $86^{+19}_{-22}$ & $108^{+19}_{-24}$ & $67^{+23}_{-23}$ & $40^{+24}_{-18}$ & $24^{+29}_{-24}$ & $202^{+33}_{-32}$ & $1342^{+124}_{-142}$\\	
+			Flare-8a　& $154^{+33}_{-21}$ & $37^{+21}_{-15}$ & $109^{+30}_{-25}$ & $0^{+24}_{-0}$ & $63^{+47}_{-50}$ & $13^{+33}_{-13}$ & $596^{+66}_{-106}$ \\
+			Flare-8b　& $138^{+20}_{-24}$ & $50^{+17}_{-15}$ & $45^{+16}_{-19}$ & $49^{+18}_{-19}$ & $108^{+40}_{-51}$ & $50^{+29}_{-28}$ & $1113^{+174}_{-119}$ \\
+			Flare-8c　& $125^{+19}_{-20}$ & $91^{+19}_{-18}$ & $72^{+23}_{-23}$ & $22^{+15}_{-21}$ & $14^{+31}_{-14}$ & $119^{+35}_{-16}$ & $1281^{+101}_{-160}$\\
+			Flare-8d　& $109^{+17}_{-16}$ & $80^{+12}_{-14}$ & $76^{+22}_{-17}$ & $17^{+18}_{-15}$ & $45^{+22}_{-29}$ & $126^{+26}_{-21}$ & $1046^{+94}_{-96}$ 
+			\\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+表~\ref{tb:flare_slice_EW}に時間分割したフレアの Si He$\alpha$, Si Ly$\alpha$, S He$\alpha$, S Ly$\alpha$, Ar He$\alpha$, Ca He$\alpha$, Fe He$\alpha$の等価幅を示す。
+
+
+
+\begin{table}[htbp]
+	\begin{center}
+		\caption{Si Ly$\alpha$ / Si He$\alpha$ の強度比と図~\ref{fig:flare_alpha_N2divN1}のプロットを用いて求めた $N_2/N_1$ (2温度モデル)、$\alpha$ (多温度モデル)}
+		\label{tb:flare_slice_SiLydivSiHe}
+		\begin{tabular}{cccccc}
+			\hline \hline
+			フレアID & Si Ly$\alpha$/Si He$\alpha$ & Si Ly$\alpha$/Si He$\alpha$ (アルベド補正後) & $\alpha$ & $N_2/N_1$ \\ \hline
+			Flare-1a & $0.4\pm0.11$ & $0.32\pm0.09$ & $-0.8^{+0.33}_{-0.42}$ & $0.43^{+0.13}_{-0.13}$ \\
+			Flare-1b & $0.52\pm0.06$ & $0.42\pm0.05$ & $-0.44^{+0.17}_{-0.19}$ & $0.57^{+0.08}_{-0.08}$ \\
+			Flare-1c & $0.43\pm0.07$ & $0.34\pm0.06$ & $-0.74^{+0.23}_{-0.24}$ & $0.45^{+0.08}_{-0.08}$ \\
+			Flare-1d & $0.33\pm0.10$ & $0.26\pm0.08$ & $-1.08^{+0.36}_{-0.48}$ & $0.34^{+0.11}_{-0.11}$ \\
+			Flare-4a & $0.32\pm0.20$ & $0.25\pm0.16$ & $-1.13^{+0.67}_{-1.15}$ & $0.33^{+0.23}_{-0.20}$ \\
+			Flare-4b & $1.84\pm1.12$ & $1.48\pm0.90$ & $1.4^{+0.69}_{-1.37}$ & $3.99^{+0.00}_{-3.12}$ \\
+			Flare-4c & $1.62\pm0.38$ & $1.3\pm0.30$ & $1.2^{+0.30}_{-0.41}$ & $3.33^{+0.66}_{-1.38}$ \\
+			Flare-4d & $1.13\pm0.30$ & $0.9\pm0.24$ & $0.68^{+0.35}_{-0.44}$ & $1.64^{+0.89}_{-0.61}$ \\						
+			Flare-8a & $0.21\pm0.11$ & $0.17\pm0.09$ & $-1.66^{+0.54}_{-0.78}$ & $0.21^{+0.12}_{-0.10}$ \\
+			Flare-8b & $0.31\pm0.10$ & $0.25\pm0.08$ & $-1.15^{+0.38}_{-0.48}$ & $0.32^{+0.12}_{-0.10}$ \\
+			Flare-8c & $0.63\pm0.13$ & $0.5\pm0.10$ & $-0.17^{+0.27}_{-0.32}$ & $0.72^{+0.20}_{-0.18}$ \\
+			Flare-8d & $0.64\pm0.13$ & $0.51\pm0.10$ & $-0.14^{+0.28}_{-0.32}$ & $0.73^{+0.21}_{-0.17}$ 
+			\\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+表~\ref{tb:flare_slice_SiLydivSiHe}に Si He$\alpha$ / Si He$\alpha$ の強度比と図~\ref{fig:flare_alpha_N2divN1}のプロットを用いて求めた $N_2/N_1$ (2温度モデル)、$\alpha$ (多温度モデル)を示す。表~\ref{tb:flare_slice_SiLydivSiHe} から、時間分割したときの温度成分の変化を知ることができる。特に 大きなフレアが発生した際の Flare-8 に注目すると、Flare-8a から Flare-8d へのフレアの立ち上がりに伴って、温度成分 $\alpha$ の値が大きくなっていき、高温成分がよりフレアピーク付近で影響していることがわかる。
+
+\newpage
+
+
+\begin{table}[htbp]
+	\begin{center}
+		\caption{フレア別に測定した絶対元素組成比}
+		\label{tb:flare_slice_abund}
+		\begin{tabular}{ccccccccc}
+			\hline \hline
+			フレアID & Si He$\alpha$ & Si Ly$\alpha$ & S He$\alpha$ & Ar He$\alpha$ & Ca He$\alpha$ & Fe He$\alpha$ \\ \hline
+			Flare-1a & $0.97^{+0.15}_{-0.14}$ & $1.0^{+0.26}_{-0.19}$ & $0.71^{+0.18}_{-0.19}$ & $2.6^{+1.49}_{-1.00}$ & $1.33^{+0.75}_{-0.53}$ & $1.4^{+0.49}_{-0.16}$\\
+			Flare-1b & $1.08^{+0.07}_{-0.10}$ & $1.17^{+0.13}_{-0.14}$ & $0.67^{+0.13}_{-0.09}$ & $0.44^{+0.51}_{-0.41}$ & $2.96^{+0.73}_{-0.62}$ & $0.82^{+0.10}_{-0.08}$\\
+			Flare-1c & $1.05^{+0.10}_{-0.09}$ & $1.15^{+0.17}_{-0.19}$ & $0.86^{+0.16}_{-0.12}$ & $0.33^{+0.54}_{-0.31}$ & $3.78^{+0.91}_{-0.74}$ & $0.72^{+0.17}_{-0.11}$\\
+			Flare-1d & $0.88^{+0.12}_{-0.14}$ & $0.95^{+0.31}_{-0.20}$ & $0.82^{+0.23}_{-0.19}$ & $1.95^{+1.52}_{-1.00}$ & $2.3^{+1.51}_{-1.17}$ & $0.8^{+0.50}_{-0.26}$\\
+			Flare-4a & $0.82^{+0.22}_{-0.19}$ & $0.8^{+0.43}_{-0.38}$ & $0.44^{+0.29}_{-0.28}$ & $0.01^{+0.74}_{-0.00}$ & $2.87^{+1.00}_{-1.08}$ & $1.4^{+0.46}_{-0.23}$\\
+			Flare-4b & $0.96^{+0.45}_{-0.26}$ & $1.01^{+0.29}_{-0.20}$ & $0.36^{+0.26}_{-0.32}$ & $0.02^{+0.54}_{-0.00}$ & $4.43^{+0.56}_{-1.10}$ & $3.49^{+0.56}_{-0.93}$\\
+			Flare-4c & $2.1^{+0.41}_{-0.37}$ & $2.32^{+0.37}_{-0.36}$ & $1.42^{+0.51}_{-0.34}$ & $2.2^{+1.80}_{-1.40}$ & $4.96^{+0.00}_{-0.00}$ & $3.07^{+1.38}_{-0.60}$\\
+			Flare-4d & $1.43^{+0.29}_{-0.36}$ & $1.54^{+0.23}_{-0.33}$ & $1.04^{+0.36}_{-0.31}$ & $0.53^{+0.88}_{-0.52}$ & $4.94^{+0.00}_{-0.00}$ & $1.84^{+0.36}_{-0.30}$\\
+			Flare-8a & $0.76^{+0.17}_{-0.10}$ & $0.76^{+0.40}_{-0.27}$ & $0.77^{+0.2}_{-0.05}$ & $1.14^{+0.99}_{-1.06}$ & $0.25^{+0.69}_{-0.24}$ & $0.51^{+0.08}_{-0.11}$\\	
+			Flare-8b & $0.8^{+0.12}_{-0.14}$ & $0.81^{+0.25}_{-0.21}$ & $0.38^{+0.13}_{-0.13}$ & $2.24^{+1.04}_{-1.13}$ & $1.09^{+0.69}_{-0.63}$ & $1.26^{+0.44}_{-0.22}$\\	
+			Flare-8c & $1.19^{+0.17}_{-0.19}$ & $1.25^{+0.23}_{-0.25}$ & $0.81^{+0.23}_{-0.24}$ & $0.14^{+0.85}_{-0.12}$ & $3.16^{+0.95}_{-0.48}$ & $1.54^{+0.30}_{-0.32}$\\	
+			Flare-8d & $1.06^{+0.16}_{-0.15}$ & $1.11^{+0.17}_{-0.19}$ & $0.86^{+0.23}_{-0.18}$ & $0.95^{+0.65}_{-0.77}$ & $3.32^{+0.73}_{-0.57}$ & $1.07^{+0.19}_{-0.17}$									
+			\\\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+表~\ref{tb:flare_slice_abund} に各フレアの絶対元素組成比を示す。表~\ref{tb:flare_slice_abund}で算出した値は、表~\ref{fig:flare_alpha_N2divN1}で求めた $N_2/N_1$ (2温度モデル)、$\alpha$ (多温度モデル) の値を用いて、図~\ref{fig:EW_abund} と同様にフレアの絶対元素組成比に対する等価幅のプロットを作成し、等価幅から絶対元素組成比に変換した値である。
+
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{c}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/flare_slice_Si.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.5\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/flare_slice_S.jpg}
+				\hspace{5mm} 
+			\end{center}
+		\end{minipage}
+	\end{tabular}	
+	\centering
+	\begin{tabular}{c}			
+		\begin{minipage}{0.33\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/flare_slice_Ar.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.33\hsize}
+			\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/flare_slice_Ca.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}
+		\begin{minipage}{0.33\hsize}
+		\begin{center}
+				\includegraphics[width=5.8cm]{Chapter5/Figures/flare_slice_Fe.jpg}
+				\hspace{5mm}
+			\end{center}
+		\end{minipage}		
+	\end{tabular}
+	\caption{フレアピークの時間を横軸 0 としたときの、Flare-1,Flare-4,Flare-9 を時間分割して求めた絶対元素組成比の時間変化。}
+	\label{fig:flare_slice_abund}
+\end{figure}
+図~\ref{fig:flare_slice_abund}に、Flare-1,Flare-4,Flare-9 を時間分割して求めた Si, S, Ar, Ca, Fe の絶対元素組成比の時間変化を示す。フレアピークの時間を 0 として横軸を設定している。とりわけ Ca は顕著に絶対元素組成比が変化しており、フレアの立ち上がりからフレアピークにかけて、絶対元素組成比が増大している。Si, S, Fe でも フレア立ち上がりから、絶対元素組成比が増大しているが、フレアピーク直前で絶対元素組成比が最大となり、その後は減少していく傾向が見られた。
